@@ -87,7 +87,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text("U ju'unil k'ajóolal (INE)"), findsOneWidget);
-    expect(find.text('2 de 3 listos'), findsOneWidget);
+    expect(find.text("2 ti' 3 ts'o'oka'an"), findsOneWidget);
+    expect(find.text('Il u kúuchil web'), findsOneWidget);
     // Linguistic rule: strictly NO audio/TTS speaker icon on indigenous cards
     expect(find.byIcon(Icons.volume_up_outlined), findsNothing);
     expect(find.byIcon(Icons.volume_up), findsNothing);

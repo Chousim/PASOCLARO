@@ -18,9 +18,9 @@ class BilingualChecklistView extends StatelessWidget {
 
   String _languagePillLabel(AppLanguage language) {
     return switch (language) {
-      AppLanguage.yucatecMaya => 'Maya Yucateco + Español',
-      AppLanguage.nahuatl => 'Náhuatl + Español',
-      AppLanguage.spanish => 'Español sencillo',
+      AppLanguage.yucatecMaya => 'Maya Yucateco',
+      AppLanguage.nahuatl => 'Náhuatl',
+      AppLanguage.spanish => 'Español',
     };
   }
 
@@ -296,7 +296,11 @@ class BilingualChecklistView extends StatelessWidget {
                           onTap: () => _showLanguagePicker(context, isSenior),
                         ),
                         OfflineStatusPill(
-                          label: 'Guardado sin internet',
+                          label: switch (language) {
+                            AppLanguage.yucatecMaya => "Ta'aka'an x-ma' internet",
+                            AppLanguage.nahuatl => 'Tlatlatilli amo internet',
+                            AppLanguage.spanish => 'Guardado sin internet',
+                          },
                           highContrast: isSenior,
                         ),
                       ],
@@ -306,6 +310,7 @@ class BilingualChecklistView extends StatelessWidget {
                       progress: progress,
                       completedCount: guide.completedCount,
                       totalCount: guide.items.length,
+                      language: language,
                       isSenior: isSenior,
                     ),
                     const SizedBox(height: 16),
@@ -325,6 +330,7 @@ class BilingualChecklistView extends StatelessWidget {
                     const SizedBox(height: 16),
                     _OfficialChannelCard(
                       channel: guide.officialChannel,
+                      language: language,
                       isSenior: isSenior,
                       onCallPhone: () => _launchPhone(
                         context,
@@ -524,13 +530,22 @@ class _ProgressRow extends StatelessWidget {
     required this.progress,
     required this.completedCount,
     required this.totalCount,
+    required this.language,
     required this.isSenior,
   });
 
   final double progress;
   final int completedCount;
   final int totalCount;
+  final AppLanguage language;
   final bool isSenior;
+
+  String get _progressLabel => switch (language) {
+        AppLanguage.yucatecMaya =>
+          "$completedCount ti' $totalCount ts'o'oka'an",
+        AppLanguage.nahuatl => '$completedCount tlen $totalCount tlamik',
+        AppLanguage.spanish => '$completedCount de $totalCount listos',
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -551,9 +566,9 @@ class _ProgressRow extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Text(
-          '$completedCount de $totalCount listos',
+          _progressLabel,
           style: AppTheme.mono(
-            isSenior ? 13 : 12,
+            isSenior ? 12.5 : 11.5,
             weight: FontWeight.w600,
             color: AppColors.graphiteSecondary,
           ),
@@ -691,7 +706,7 @@ class _BilingualChecklistCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    item.descriptionSpanish,
+                    item.descriptionForLanguage(language),
                     style: AppTheme.body(
                       isSenior ? 17 : 14.5,
                       color: AppColors.slateCharcoal,
@@ -728,7 +743,7 @@ class _BilingualChecklistCard extends StatelessWidget {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              item.howToGetIfMissing,
+                              item.howToGetForLanguage(language),
                               style: AppTheme.body(
                                 isSenior ? 16 : 13.5,
                                 weight: FontWeight.w500,
@@ -754,15 +769,43 @@ class _BilingualChecklistCard extends StatelessWidget {
 class _OfficialChannelCard extends StatelessWidget {
   const _OfficialChannelCard({
     required this.channel,
+    required this.language,
     required this.isSenior,
     required this.onCallPhone,
     required this.onOpenOfficialUrl,
   });
 
   final OfficialChannel channel;
+  final AppLanguage language;
   final bool isSenior;
   final VoidCallback onCallPhone;
   final VoidCallback onOpenOfficialUrl;
+
+  String get _headerBadge => switch (language) {
+        AppLanguage.yucatecMaya => 'U JAAJIL KÚUCHIL',
+        AppLanguage.nahuatl => 'MELAUAK KALI',
+        AppLanguage.spanish => 'CANAL OFICIAL VERIFICADO',
+      };
+
+  String get _freeServiceLabel => switch (language) {
+        AppLanguage.yucatecMaya =>
+          "Ma' tu bo'ota'al, x-ma' máaxo'ob tu chúumuk.",
+        AppLanguage.nahuatl =>
+          'Amo motlaxtlaua, amo onka tlapaleuianimeh.',
+        AppLanguage.spanish => channel.freeServiceNote,
+      };
+
+  String get _callLabel => switch (language) {
+        AppLanguage.yucatecMaya => "T'aan",
+        AppLanguage.nahuatl => 'Tlanotsa',
+        AppLanguage.spanish => 'Llamar',
+      };
+
+  String get _websiteButtonLabel => switch (language) {
+        AppLanguage.yucatecMaya => 'Il u kúuchil web',
+        AppLanguage.nahuatl => 'Xikitta sitio web',
+        AppLanguage.spanish => 'Ver Sitio Web',
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -783,12 +826,12 @@ class _OfficialChannelCard extends StatelessWidget {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  'CANAL OFICIAL VERIFICADO',
+                  _headerBadge,
                   style: AppTheme.mono(
-                    isSenior ? 12.5 : 11.5,
+                    isSenior ? 12 : 11,
                     weight: FontWeight.w600,
                     color: accent,
-                    letterSpacing: 0.6,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ),
@@ -843,7 +886,7 @@ class _OfficialChannelCard extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  channel.freeServiceNote,
+                  _freeServiceLabel,
                   style: AppTheme.body(
                     isSenior ? 16 : 14,
                     weight: FontWeight.w500,
@@ -896,7 +939,7 @@ class _OfficialChannelCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Llamar',
+                      _callLabel,
                       style: AppTheme.body(
                         isSenior ? 15 : 13.5,
                         weight: FontWeight.w600,
@@ -910,8 +953,8 @@ class _OfficialChannelCard extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           PrimaryActionButton(
-            label: 'Ver ubicación y horario oficial',
-            icon: Icons.location_on_outlined,
+            label: _websiteButtonLabel,
+            icon: Icons.language_rounded,
             backgroundColor: accent,
             minHeight: isSenior ? 60 : 54,
             onPressed: onOpenOfficialUrl,
