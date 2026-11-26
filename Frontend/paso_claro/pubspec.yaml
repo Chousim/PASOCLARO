@@ -1,5 +1,5 @@
 name: paso_claro
-description: "A new Flutter project."
+description: "PasoClaro — Acompañante móvil multimodal y sin barreras para trámites, salud, educación y empleo."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^9.0.0
   http: ^1.6.0
+  http_parser: ^4.1.2
   shared_preferences: ^2.5.6
   image_picker: ^1.2.4
   flutter_tts: ^4.2.5
@@ -53,6 +54,15 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#135D4F"
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
+  min_sdk_android: 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -64,6 +74,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/icon/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

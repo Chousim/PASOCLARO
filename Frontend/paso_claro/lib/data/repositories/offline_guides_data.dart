@@ -129,83 +129,58 @@ abstract final class OfflineGuidesData {
     return switch (category) {
       TramiteCategory.salud => const [
           ChatMessage(
-            id: 'm1',
-            isUser: true,
-            text:
-                'Necesito sacar cita en el centro de salud pero no sé qué papeles llevar.',
-            timestampLabel: '10:14 AM · Por voz',
-            wasVoice: true,
-          ),
-          ChatMessage(
-            id: 'm2',
+            id: 'salud_welcome',
             isUser: false,
             text:
-                'Con gusto te ayudo. Para sacar cita por primera vez en tu Centro de Salud necesitas 3 documentos básicos: tu INE, tu CURP y un comprobante de domicilio.',
-            timestampLabel: '10:14 AM',
-            officialTag: 'Oficial · Salud',
-            audioDurationLabel: 'Escuchar respuesta (0:18)',
-            bulletRequirements: [
-              ChatRequirementBullet(
-                title: '1. INE vigente',
-                detail: 'Original y copia por ambos lados',
-              ),
-              ChatRequirementBullet(
-                title: '2. CURP impresa',
-                detail: 'Formato reciente descargado de internet',
-              ),
-              ChatRequirementBullet(
-                title: '3. Comprobante de domicilio',
-                detail: 'Luz, agua o predial menor a 3 meses',
-              ),
+                'Hola, soy tu asistente de salud. Escribe o dicta tu duda en español sencillo, o toca una pregunta para empezar.',
+            timestampLabel: 'Ahora',
+            officialTag: 'Asistente · Salud',
+            quickReplies: [
+              '¿Qué papeles necesito para sacar cita?',
+              '¿Qué hago si me falta un documento?',
             ],
-            followUpQuestion: '¿Ya tienes estos tres papeles a la mano?',
-            quickReplies: ['Sí, ya los tengo', 'Me falta alguno'],
           ),
         ],
-      TramiteCategory.tramites || TramiteCategory.educacion => const [
+      TramiteCategory.tramites => const [
           ChatMessage(
-            id: 'b1',
-            isUser: true,
-            text: 'Quiero pedir una beca pero no entiendo qué es la constancia de estudios.',
-            timestampLabel: '10:15 AM',
-          ),
-          ChatMessage(
-            id: 'b2',
+            id: 'tramites_welcome',
             isUser: false,
             text:
-                'Una constancia de estudios es una hoja sellada por tu escuela que confirma que sí estás inscrito este ciclo. La pides gratis en dirección o servicios escolares.',
-            timestampLabel: '10:15 AM',
-            officialTag: 'Oficial · Becas',
-            audioDurationLabel: 'Escuchar respuesta (0:16)',
-            bulletRequirements: [
-              ChatRequirementBullet(
-                title: '1. Constancia de estudios',
-                detail: 'Hoja sellada de tu escuela',
-              ),
-              ChatRequirementBullet(
-                title: '2. CURP certificada',
-                detail: 'Descargada gratis en gob.mx/curp',
-              ),
-              ChatRequirementBullet(
-                title: '3. Comprobante de domicilio',
-                detail: 'Recibo de luz, agua o constancia municipal',
-              ),
+                'Hola, te ayudo con trámites y apoyos sociales en palabras claras. Pregúntame lo que necesites o elige una opción.',
+            timestampLabel: 'Ahora',
+            officialTag: 'Asistente · Trámites',
+            quickReplies: [
+              '¿Qué necesito para pedir un apoyo?',
+              '¿Cómo consigo mi CURP o comprobante?',
             ],
-            followUpQuestion: '¿Quieres ver tu lista paso a paso guardada sin internet?',
-            quickReplies: ['Ver mi lista', 'Me falta alguno'],
+          ),
+        ],
+      TramiteCategory.educacion => const [
+          ChatMessage(
+            id: 'edu_welcome',
+            isUser: false,
+            text:
+                'Hola, te explico becas y trámites escolares sin tecnicismos. Pregúntame con confianza o elige una duda común.',
+            timestampLabel: 'Ahora',
+            officialTag: 'Asistente · Becas',
+            quickReplies: [
+              '¿Qué es una constancia de estudios?',
+              '¿Qué papeles piden para una beca?',
+            ],
           ),
         ],
       TramiteCategory.empleo => const [
           ChatMessage(
-            id: 'e1',
+            id: 'empleo_welcome',
             isUser: false,
             text:
-                'Puedo ayudarte a entender vacantes, preparar tus documentos básicos (INE, CURP, comprobante de domicilio y solicitud) y canalizarte al Servicio Nacional de Empleo gratuito.',
+                'Hola, te ayudo a entender vacantes, requisitos laborales y apoyos gratuitos de empleo. ¿En qué te ayudo hoy?',
             timestampLabel: 'Ahora',
-            officialTag: 'Oficial · Empleo',
-            audioDurationLabel: 'Escuchar respuesta (0:15)',
-            followUpQuestion: '¿Qué necesitas hacer hoy?',
-            quickReplies: ['Ver documentos básicos', 'Escanear una vacante'],
+            officialTag: 'Asistente · Empleo',
+            quickReplies: [
+              '¿Qué documentos piden para buscar trabajo?',
+              '¿Dónde encuentro bolsa de trabajo gratuita?',
+            ],
           ),
         ],
     };

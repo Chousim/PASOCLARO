@@ -161,7 +161,10 @@ class _ScannerViewState extends State<ScannerView> {
                               OfflineStatusPill(
                                 label: _isAnalyzing
                                     ? 'Leyendo documento...'
-                                    : 'Documento leído con claridad',
+                                    : (scan.deadlineLabel == '[por verificar]' &&
+                                            scan.folioCode == '[sin folio]')
+                                        ? 'Lectura parcial — revisa los datos'
+                                        : 'Documento leído con claridad',
                                 highContrast: seniorMode,
                               ),
                               _CaptureActionPill(
@@ -176,12 +179,16 @@ class _ScannerViewState extends State<ScannerView> {
                           scan: scan,
                           seniorMode: seniorMode,
                           onSpeak: () {
+                            final spokenExplanation =
+                                scan.plainExplanation.contains('\n\n')
+                                    ? scan.plainExplanation.split('\n\n').last
+                                    : scan.plainExplanation;
                             final alertText =
                                 scan.missingRequirementAlert != null
                                     ? ' Aviso importante: ${scan.missingRequirementAlert}'
                                     : '';
                             widget.appState.speakSpanish(
-                              '${scan.documentType}. ${scan.plainExplanation} Fecha límite: ${scan.deadlineLabel}. Folio: ${scan.folioCode}.$alertText',
+                              '${scan.documentType}. $spokenExplanation Fecha límite: ${scan.deadlineLabel}. Folio: ${scan.folioCode}.$alertText',
                             );
                           },
                         ),
@@ -806,6 +813,31 @@ class _ScanExplanationCard extends StatelessWidget {
               ),
             ),
           ),
+          if (scan.deadlineLabel == '[por verificar]' ||
+              scan.folioCode == '[sin folio]') ...[
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.info_outline_rounded,
+                  size: 16,
+                  color: AppColors.graphiteSecondary,
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    'Algunos datos no se distinguieron bien en la foto. Revísalos directamente en tu hoja o intenta con más luz.',
+                    style: AppTheme.body(
+                      seniorMode ? 14 : 12.5,
+                      color: AppColors.graphiteSecondary,
+                      height: 1.35,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
           if (scan.missingRequirementAlert != null &&
               scan.missingRequirementAlert!.isNotEmpty) ...[
             const SizedBox(height: 14),

@@ -430,20 +430,20 @@ class _TopHeader extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.swap_horiz_rounded,
-                      size: 16,
-                      color: AppColors.slateCharcoal,
-                    ),
-                    const SizedBox(width: 4),
                     Text(
-                      'Guías',
+                      'Cambiar',
                       style: AppTheme.body(
                         isSenior ? 14 : 12.5,
                         weight: FontWeight.w600,
                         color: AppColors.charcoalInk,
                         height: 1.1,
                       ),
+                    ),
+                    const SizedBox(width: 2),
+                    const Icon(
+                      Icons.keyboard_arrow_down_rounded,
+                      size: 16,
+                      color: AppColors.slateCharcoal,
                     ),
                   ],
                 ),

@@ -25,9 +25,14 @@ class PasoClaroRepository {
   Future<bool> getSlowVoice() => _storage.loadSlowVoice();
   Future<void> saveSlowVoice(bool enabled) => _storage.saveSlowVoice(enabled);
 
+  Future<bool> checkBackendHealth() => _api.checkHealth();
+
   Future<List<TramiteGuide>> loadGuides() async {
+    final remoteGuides = await _api.fetchGuides();
+    final sourceGuides = remoteGuides ?? OfflineGuidesData.anchorGuides;
+
     final result = <TramiteGuide>[];
-    for (final baseGuide in OfflineGuidesData.anchorGuides) {
+    for (final baseGuide in sourceGuides) {
       final savedIds = await _storage.loadCompletedItemIds(baseGuide.id);
       if (savedIds.isEmpty) {
         result.add(baseGuide);

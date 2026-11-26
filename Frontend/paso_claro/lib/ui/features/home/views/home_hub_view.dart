@@ -168,8 +168,8 @@ class HomeHubView extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(999),
                                   child: OfflineStatusPill(
                                     label: isBilingual
-                                        ? '${appState.savedGuidesCount} guías bilingües'
-                                        : '${appState.savedGuidesCount} guías sin internet',
+                                        ? 'Mis listas bilingües (${appState.savedGuidesCount}) ›'
+                                        : 'Mis listas (${appState.savedGuidesCount}) ›',
                                   ),
                                 ),
                                 InkWell(

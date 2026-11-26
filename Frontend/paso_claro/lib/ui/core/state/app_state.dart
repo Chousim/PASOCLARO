@@ -21,6 +21,7 @@ class PasoClaroAppState extends ChangeNotifier {
   AppLanguage _language = AppLanguage.spanish;
   bool _slowVoice = true;
   bool _initialized = false;
+  bool _backendOnline = false;
   List<TramiteGuide> _guides;
   String _activeGuideId = 'salud_cita_clinica';
   ScannedDocumentResult _lastScan = OfflineGuidesData.sampleMedicalReferral();
@@ -32,6 +33,7 @@ class PasoClaroAppState extends ChangeNotifier {
   bool get slowVoice => _slowVoice;
   bool get isSeniorMode => _selectedProfile == UserProfileType.senior;
   bool get initialized => _initialized;
+  bool get isBackendOnline => _backendOnline;
   List<TramiteGuide> get guides => List.unmodifiable(_guides);
   int get savedGuidesCount => _guides.length;
   ScannedDocumentResult get lastScan => _lastScan;
@@ -47,6 +49,7 @@ class PasoClaroAppState extends ChangeNotifier {
     _selectedProfile = await _repository.getProfile();
     _language = await _repository.getLanguage();
     _slowVoice = await _repository.getSlowVoice();
+    _backendOnline = await _repository.checkBackendHealth();
     _guides = await _repository.loadGuides();
     _initialized = true;
     notifyListeners();

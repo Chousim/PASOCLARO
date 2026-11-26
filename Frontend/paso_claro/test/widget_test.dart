@@ -131,7 +131,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.text('Asistente de Salud'), findsOneWidget);
-    expect(find.text('Voz pausada'), findsOneWidget);
+    expect(find.text('Voz lenta: Sí'), findsOneWidget);
     // No user avatar icon in Assistant header
     expect(find.byIcon(Icons.person), findsNothing);
 

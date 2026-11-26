@@ -31,6 +31,7 @@ class AssistantView extends StatefulWidget {
 class _AssistantViewState extends State<AssistantView> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey _latestAssistantKey = GlobalKey();
 
   late List<ChatMessage> _messages;
   bool _isListening = false;
@@ -72,6 +73,24 @@ class _AssistantViewState extends State<AssistantView> {
     });
   }
 
+  /// Aligns the TOP of the newest Gemini answer cleanly near the top of the
+  /// chat viewport so the user reads from the beginning instead of jumping
+  /// past the answer to the bottom buttons.
+  void _scrollToLatestAssistantReply() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final targetContext = _latestAssistantKey.currentContext;
+      if (targetContext != null) {
+        Scrollable.ensureVisible(
+          targetContext,
+          duration: const Duration(milliseconds: 280),
+          curve: Curves.easeOut,
+          alignment: 0.04,
+        );
+      }
+    });
+  }
+
   Future<void> _sendUserMessage(String rawText, {bool wasVoice = false}) async {
     final text = rawText.trim();
     if (text.isEmpty || _isThinking) return;
@@ -94,7 +113,7 @@ class _AssistantViewState extends State<AssistantView> {
 
     final completedDocs = widget.appState.activeGuide.items
         .where((item) => item.isCompleted)
-        .map((item) => item.titleSpanish)
+        .map((item) => item.descriptionSpanish)
         .toList();
 
     final reply = await widget.appState.repository.askAssistant(
@@ -110,7 +129,7 @@ class _AssistantViewState extends State<AssistantView> {
       _messages.add(reply);
       _isThinking = false;
     });
-    _scrollToBottom();
+    _scrollToLatestAssistantReply();
   }
 
   void _handleQuickReply(String reply) {
@@ -135,7 +154,12 @@ class _AssistantViewState extends State<AssistantView> {
       return;
     }
 
-    final buffer = StringBuffer(message.text);
+    // Bilingual responses from backend use "indigenous\n\nspanish";
+    // read strictly the Spanish part to avoid distorted TTS pronunciation.
+    final spokenMain = message.text.contains('\n\n')
+        ? message.text.split('\n\n').last
+        : message.text;
+    final buffer = StringBuffer(spokenMain);
     for (final bullet in message.bulletRequirements) {
       buffer.write(' ${bullet.title}: ${bullet.detail}.');
     }
@@ -220,19 +244,24 @@ class _AssistantViewState extends State<AssistantView> {
                     controller: _scrollController,
                     padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
                     children: [
-                      for (final message in _messages) ...[
-                        if (message.isUser)
+                      for (var i = 0; i < _messages.length; i++) ...[
+                        if (_messages[i].isUser)
                           _UserBubble(
-                            message: message,
+                            message: _messages[i],
                             seniorMode: seniorMode,
                           )
                         else
-                          _AssistantCard(
-                            message: message,
-                            seniorMode: seniorMode,
-                            isSpeaking: _speakingMessageId == message.id,
-                            onSpeak: () => _toggleSpeakMessage(message),
-                            onQuickReply: _handleQuickReply,
+                          KeyedSubtree(
+                            key: i == _messages.length - 1
+                                ? _latestAssistantKey
+                                : null,
+                            child: _AssistantCard(
+                              message: _messages[i],
+                              seniorMode: seniorMode,
+                              isSpeaking: _speakingMessageId == _messages[i].id,
+                              onSpeak: () => _toggleSpeakMessage(_messages[i]),
+                              onQuickReply: _handleQuickReply,
+                            ),
                           ),
                         const SizedBox(height: 16),
                       ],
@@ -240,7 +269,18 @@ class _AssistantViewState extends State<AssistantView> {
                         _ThinkingBubble(seniorMode: seniorMode),
                         const SizedBox(height: 16),
                       ],
-                      _ReassuranceNotice(seniorMode: seniorMode),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          'Orientación ciudadana gratuita · Nunca te pediremos pagos ni contraseñas.',
+                          textAlign: TextAlign.center,
+                          style: AppTheme.body(
+                            seniorMode ? 13.5 : 12,
+                            color: AppColors.mutedMeta,
+                            height: 1.35,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -351,7 +391,7 @@ class _AssistantHeader extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      'Voz pausada',
+                      slowVoice ? 'Voz lenta: Sí' : 'Voz lenta: No',
                       maxLines: 1,
                       softWrap: false,
                       style: AppTheme.body(
@@ -573,8 +613,7 @@ class _AssistantCard extends StatelessWidget {
                       child: Text(
                         isSpeaking
                             ? 'Detener lectura'
-                            : (message.audioDurationLabel ??
-                                'Escuchar respuesta'),
+                            : 'Escuchar en voz alta',
                         style: AppTheme.body(
                           seniorMode ? 15.5 : 13.5,
                           weight: FontWeight.w600,
@@ -706,8 +745,21 @@ class _QuickReplyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = isPrimary ? AppColors.agaveJade : AppColors.purePaper;
-    final fgColor = isPrimary ? AppColors.purePaper : AppColors.charcoalInk;
+    final lower = label.toLowerCase();
+    final isChecklistAction = lower.contains('lista');
+    final isScannerAction = lower.contains('escanear');
+
+    final displayLabel = isChecklistAction
+        ? 'Ver mi checklist de documentos (sin internet)'
+        : (isScannerAction ? 'Abrir escáner de documentos' : label);
+    final trailingIcon = isChecklistAction
+        ? Icons.checklist_rounded
+        : (isScannerAction
+            ? Icons.document_scanner_outlined
+            : Icons.arrow_forward_rounded);
+
+    final bgColor = isPrimary ? AppColors.agaveMist : AppColors.purePaper;
+    final fgColor = isPrimary ? AppColors.agaveDeep : AppColors.charcoalInk;
     final borderColor = isPrimary
         ? AppColors.agaveJade
         : (seniorMode ? AppColors.charcoalInk : AppColors.strongBorder);
@@ -720,33 +772,33 @@ class _QuickReplyButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         child: Container(
           width: double.infinity,
-          constraints: BoxConstraints(minHeight: seniorMode ? 54 : 48),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          constraints: BoxConstraints(minHeight: seniorMode ? 54 : 46),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: borderColor,
-              width: seniorMode ? 2 : 1.5,
+              width: seniorMode ? 2 : 1.4,
             ),
           ),
           child: Row(
             children: [
               Expanded(
                 child: Text(
-                  label,
+                  displayLabel,
                   style: AppTheme.body(
-                    seniorMode ? 17 : 15,
+                    seniorMode ? 16.5 : 14.5,
                     weight: FontWeight.w600,
                     color: fgColor,
-                    height: 1.2,
+                    height: 1.25,
                   ),
                 ),
               ),
               const SizedBox(width: 8),
               Icon(
-                Icons.arrow_forward_rounded,
+                trailingIcon,
                 size: 18,
-                color: isPrimary ? AppColors.purePaper : AppColors.agaveJade,
+                color: AppColors.agaveJade,
               ),
             ],
           ),
@@ -784,52 +836,6 @@ class _ThinkingBubble extends StatelessWidget {
             style: AppTheme.body(
               seniorMode ? 16 : 14,
               color: AppColors.graphiteSecondary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ReassuranceNotice extends StatelessWidget {
-  const _ReassuranceNotice({required this.seniorMode});
-
-  final bool seniorMode;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-      decoration: BoxDecoration(
-        color: AppColors.softStone,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: seniorMode ? AppColors.strongBorder : AppColors.whisperBorder,
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 2),
-            child: Icon(
-              Icons.verified_user_outlined,
-              size: 18,
-              color: AppColors.agaveJade,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              'Servicio público gratuito — Nunca te solicitarán pagos por turnos de atención médica.',
-              style: AppTheme.body(
-                seniorMode ? 15 : 13,
-                weight: FontWeight.w500,
-                color: AppColors.graphiteSecondary,
-                height: 1.4,
-              ),
             ),
           ),
         ],
