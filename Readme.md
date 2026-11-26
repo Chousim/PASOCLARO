@@ -75,7 +75,7 @@ La solución sigue una arquitectura cliente-servidor ligera y sin estado (*state
 ## 5. Manual de usuario
 
 ### Paso 1: Instalar y abrir la aplicación
-1. Descarga el archivo instalador (**APK**) de **PasoClaro** en tu teléfono Android desde `https://github.com/Chousim/PASOCLARO/releases/download/v1.0.1/app-release.apk` y ábrelo para instalar la aplicación (si tu teléfono solicita permiso para instalar aplicaciones externas, acéptalo).
+1. Descarga el archivo instalador (**APK**) de **PasoClaro** en tu teléfono Android desde [PASOCLARO APK](https://github.com/Chousim/PASOCLARO/releases/download/v1.0.1/app-release.apk) y ábrelo para instalar la aplicación (si tu teléfono solicita permiso para instalar aplicaciones externas, acéptalo).
 2. Toca el ícono de **PasoClaro** en la pantalla de tu teléfono para abrirla. No necesitas crear una cuenta ni recordar contraseñas.
 
 ### Paso 2: Elegir cómo quieres que te ayude
