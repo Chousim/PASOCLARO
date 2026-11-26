@@ -1,122 +1,189 @@
-import 'package:material_ui/material_ui.dart';
+import 'package:flutter/material.dart';
+import 'data/repositories/pasoclaro_repository.dart';
+import 'data/services/local_storage_service.dart';
+import 'data/services/pasoclaro_api_service.dart';
+import 'data/services/voice_service.dart';
+import 'domain/models/pasoclaro_models.dart';
+import 'ui/core/state/app_state.dart';
+import 'ui/core/theme/app_theme.dart';
+import 'ui/features/assistant/views/assistant_view.dart';
+import 'ui/features/checklist/views/bilingual_checklist_view.dart';
+import 'ui/features/home/views/home_hub_view.dart';
+import 'ui/features/home/views/senior_home_view.dart';
+import 'ui/features/onboarding/views/onboarding_view.dart';
+import 'ui/features/scanner/views/scanner_view.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  final appState = PasoClaroAppState(
+    repository: PasoClaroRepository(
+      storage: LocalStorageService(),
+      api: PasoClaroApiService(),
+    ),
+    voiceService: VoiceService(),
+  )..initialize();
+
+  runApp(PasoClaroApp(appState: appState));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class PasoClaroApp extends StatelessWidget {
+  const PasoClaroApp({super.key, required this.appState});
 
-  // This widget is the root of your application.
+  final PasoClaroAppState appState;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return ListenableBuilder(
+      listenable: appState,
+      builder: (context, _) {
+        return MaterialApp(
+          title: 'PasoClaro',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.build(seniorMode: appState.isSeniorMode),
+          home: _OnboardingEntry(appState: appState),
+        );
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class _OnboardingEntry extends StatelessWidget {
+  const _OnboardingEntry({required this.appState});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+  final PasoClaroAppState appState;
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  void _openHome(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (_) => _AdaptiveHomeShell(appState: appState),
+      ),
+    );
+  }
 
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  void _openVoiceDirectly(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (_) => _AdaptiveHomeShell(
+          appState: appState,
+          openVoiceOnStart: true,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return OnboardingView(
+      appState: appState,
+      onContinue: () => _openHome(context),
+      onStartVoice: () => _openVoiceDirectly(context),
+    );
+  }
+}
+
+class _AdaptiveHomeShell extends StatefulWidget {
+  const _AdaptiveHomeShell({
+    required this.appState,
+    this.openVoiceOnStart = false,
+  });
+
+  final PasoClaroAppState appState;
+  final bool openVoiceOnStart;
+
+  @override
+  State<_AdaptiveHomeShell> createState() => _AdaptiveHomeShellState();
+}
+
+class _AdaptiveHomeShellState extends State<_AdaptiveHomeShell> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.openVoiceOnStart) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _openAssistant(TramiteCategory.salud, autoStartVoice: true);
+      });
+    }
+  }
+
+  void _openAssistant(
+    TramiteCategory category, {
+    bool autoStartVoice = false,
+  }) {
+    widget.appState.selectGuideForCategory(category);
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => AssistantView(
+          appState: widget.appState,
+          category: category,
+          autoStartVoice: autoStartVoice,
+          onOpenScanner: _openScanner,
+          onOpenChecklist: _openChecklist,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    );
+  }
+
+  void _openScanner() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => ScannerView(
+          appState: widget.appState,
+          onOpenChecklist: _openChecklist,
+        ),
       ),
+    );
+  }
+
+  void _openChecklist() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => BilingualChecklistView(appState: widget.appState),
+      ),
+    );
+  }
+
+  void _openOnboardingSettings() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => OnboardingView(
+          appState: widget.appState,
+          onContinue: () => Navigator.of(context).pop(),
+          onStartVoice: () {
+            Navigator.of(context).pop();
+            _openAssistant(TramiteCategory.salud, autoStartVoice: true);
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: widget.appState,
+      builder: (context, _) {
+        if (widget.appState.isSeniorMode) {
+          return SeniorHomeView(
+            appState: widget.appState,
+            onSelectCategory: _openAssistant,
+            onOpenScanner: _openScanner,
+            onOpenVoiceAssistant: () =>
+                _openAssistant(TramiteCategory.salud, autoStartVoice: true),
+            onOpenSavedLists: _openChecklist,
+            onOpenSettings: _openOnboardingSettings,
+          );
+        }
+        return HomeHubView(
+          appState: widget.appState,
+          onSelectCategory: _openAssistant,
+          onOpenScanner: _openScanner,
+          onOpenVoiceAssistant: () =>
+              _openAssistant(TramiteCategory.salud, autoStartVoice: true),
+          onOpenSavedLists: _openChecklist,
+          onOpenSettings: _openOnboardingSettings,
+        );
+      },
     );
   }
 }
