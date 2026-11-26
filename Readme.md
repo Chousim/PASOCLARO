@@ -7,6 +7,8 @@
 **Repositorio:** https://github.com/Chousim/PASOCLARO.git  
 **Bocetos y Wireframes (Stitch):** https://stitch.google.com/projects/7125630527258665541
 
+**Link de Descarga:** [PASOCLARO APK](https://github.com/Chousim/PASOCLARO/releases/download/v1.0.1/app-release.apk)
+
 ---
 
 ## 1. Resumen ejecutivo
