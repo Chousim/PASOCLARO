@@ -2,10 +2,11 @@
 
 import asyncio
 import io
+import os
 
 import pytest
 from fastapi.testclient import TestClient
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 from app.main import app
 from app.schemas import ScannerResponse
@@ -178,3 +179,40 @@ def test_scanner_analyze_rejects_oversized_payload():
         files={"file": ("grande.png", oversized_bytes, "image/png")},
     )
     assert response.status_code in {400, 422}
+
+
+@pytest.mark.skipif(
+    not os.getenv("RUN_LIVE_GEMINI_TESTS"),
+    reason="Set RUN_LIVE_GEMINI_TESTS=1 to test live Gemini API",
+)
+def test_scanner_analyze_live_gemini():
+    img = Image.new("RGB", (700, 320), color="white")
+    draw = ImageDraw.Draw(img)
+    text = (
+        "HOJA DE REFERENCIA MEDICA\n"
+        "Clinica Familiar\n"
+        "Folio: REF-4082\n"
+        "Fecha limite: 15 DIC 2026\n"
+        "Especialidad: Oftalmologia"
+    )
+    draw.multiline_text(
+        (30, 30),
+        text,
+        fill="black",
+        font=ImageFont.load_default(size=24),
+        spacing=12,
+    )
+    buffer = io.BytesIO()
+    img.save(buffer, format="JPEG")
+
+    response = client.post(
+        "/api/scanner/analyze",
+        data={"perfil": "bilingual", "idioma": "es"},
+        files={"file": ("referencia.jpg", buffer.getvalue(), "image/jpeg")},
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert "No se pudo completar la lectura automática" not in data["explicacion"]
+    assert "No pudimos leer la imagen completa" not in data["explicacion"]
+    assert data["guia_id"] == "salud_cita_clinica"

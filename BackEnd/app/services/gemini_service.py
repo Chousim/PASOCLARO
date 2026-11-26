@@ -2,15 +2,20 @@
 
 import asyncio
 import inspect
+import json
 import logging
 import re
+from typing import Any, TypeVar
 
 from google import genai
 from google.genai import types
+from pydantic import BaseModel
 
 from app.config import (
     CHAT_TIMEOUT_SECONDS,
+    DEPRECATED_GEMINI_MODELS,
     GEMINI_API_KEY,
+    GEMINI_FALLBACK_MODELS,
     GEMINI_MODEL,
     SCANNER_TIMEOUT_SECONDS,
 )
@@ -116,6 +121,9 @@ def sanitize_plain_text(text: str) -> str:
     return "\n".join(normalized_lines).strip()
 
 
+_SchemaT = TypeVar("_SchemaT", bound=BaseModel)
+
+
 def _require_api_key() -> str:
     """Obtiene la API key configurada o lanza error si falta."""
     api_key = GEMINI_API_KEY.strip()
@@ -124,30 +132,107 @@ def _require_api_key() -> str:
     return api_key
 
 
+def _get_candidate_models() -> list[str]:
+    """Devuelve modelos candidatos únicos, omitiendo modelos deprecados."""
+    candidates: list[str] = []
+    configured = (GEMINI_MODEL or "").strip()
+    if configured and configured not in DEPRECATED_GEMINI_MODELS:
+        candidates.append(configured)
+
+    for model_name in GEMINI_FALLBACK_MODELS:
+        normalized = model_name.strip()
+        if (
+            normalized
+            and normalized not in DEPRECATED_GEMINI_MODELS
+            and normalized not in candidates
+        ):
+            candidates.append(normalized)
+
+    return candidates or list(GEMINI_FALLBACK_MODELS)
+
+
+def _coerce_scanner_guia_id(data: dict[str, Any]) -> dict[str, Any]:
+    """Asegura que guia_id en un dict de escáner sea un literal válido."""
+    raw_guia = str(data.get("guia_id") or "").strip().lower()
+    if raw_guia in {"salud_cita_clinica", "beca_apoyo_social"}:
+        return data
+
+    normalized = (
+        raw_guia.replace("á", "a")
+        .replace("é", "e")
+        .replace("í", "i")
+        .replace("ó", "o")
+        .replace("ú", "u")
+    )
+    coerced: GuiaIdType = (
+        "beca_apoyo_social"
+        if any(
+            kw in normalized
+            for kw in ("beca", "escuela", "apoyo", "tramite", "educacion")
+        )
+        else "salud_cita_clinica"
+    )
+    return {**data, "guia_id": coerced}
+
+
+def _parse_model_response(response: Any, schema_cls: type[_SchemaT]) -> _SchemaT:
+    """Extrae y valida el Structured Output desde response.parsed o response.text."""
+    parsed = getattr(response, "parsed", None)
+    if isinstance(parsed, schema_cls):
+        return parsed
+    if isinstance(parsed, dict):
+        data = _coerce_scanner_guia_id(parsed) if schema_cls is ScannerResponse else parsed
+        return schema_cls.model_validate(data)
+
+    raw_text = getattr(response, "text", None)
+    if isinstance(raw_text, str) and raw_text.strip():
+        cleaned_json = raw_text.strip()
+        fence_match = re.match(
+            r"^```(?:json)?\s*(.*?)\s*```$",
+            cleaned_json,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        if fence_match:
+            cleaned_json = fence_match.group(1).strip()
+
+        data = json.loads(cleaned_json)
+        if schema_cls is ScannerResponse and isinstance(data, dict):
+            data = _coerce_scanner_guia_id(data)
+        return schema_cls.model_validate(data)
+
+    raise ValueError(f"Respuesta vacía de Gemini para {schema_cls.__name__}.")
+
+
 def _call_gemini_chat(prompt: str, system_instruction: str) -> ChatResponse:
     """Ejecuta una llamada síncrona con Structured Output a Gemini para el chat."""
     api_key = _require_api_key()
-    client = genai.Client(api_key=api_key)
+    client = genai.Client(
+        api_key=api_key,
+        http_options=types.HttpOptions(timeout=int(CHAT_TIMEOUT_SECONDS * 1000)),
+    )
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,
         response_mime_type="application/json",
         response_schema=ChatResponse,
         temperature=0.2,
     )
-    response = client.models.generate_content(
-        model=GEMINI_MODEL,
-        contents=prompt,
-        config=config,
-    )
 
-    parsed = getattr(response, "parsed", None)
-    if isinstance(parsed, ChatResponse):
-        return parsed
-    if isinstance(parsed, dict):
-        return ChatResponse.model_validate(parsed)
-    if getattr(response, "text", None):
-        return ChatResponse.model_validate_json(response.text)
-    raise ValueError("Respuesta vacía de Gemini para chat.")
+    last_exc: Exception | None = None
+    for model_name in _get_candidate_models():
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=config,
+            )
+            return _parse_model_response(response, ChatResponse)
+        except Exception as exc:
+            last_exc = exc
+            logger.warning("Fallo modelo Gemini %s en chat: %s", model_name, exc)
+
+    if last_exc is not None:
+        raise last_exc
+    raise RuntimeError("No hay modelos Gemini disponibles para chat.")
 
 
 def _call_gemini_scanner(
@@ -158,7 +243,10 @@ def _call_gemini_scanner(
 ) -> ScannerResponse:
     """Ejecuta una llamada multimodal síncrona con Structured Output para escáner."""
     api_key = _require_api_key()
-    client = genai.Client(api_key=api_key)
+    client = genai.Client(
+        api_key=api_key,
+        http_options=types.HttpOptions(timeout=int(SCANNER_TIMEOUT_SECONDS * 1000)),
+    )
     config = types.GenerateContentConfig(
         system_instruction=system_instruction,
         response_mime_type="application/json",
@@ -166,20 +254,23 @@ def _call_gemini_scanner(
         temperature=0.2,
     )
     image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
-    response = client.models.generate_content(
-        model=GEMINI_MODEL,
-        contents=[image_part, prompt],
-        config=config,
-    )
 
-    parsed = getattr(response, "parsed", None)
-    if isinstance(parsed, ScannerResponse):
-        return parsed
-    if isinstance(parsed, dict):
-        return ScannerResponse.model_validate(parsed)
-    if getattr(response, "text", None):
-        return ScannerResponse.model_validate_json(response.text)
-    raise ValueError("Respuesta vacía de Gemini para escáner.")
+    last_exc: Exception | None = None
+    for model_name in _get_candidate_models():
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=[image_part, prompt],
+                config=config,
+            )
+            return _parse_model_response(response, ScannerResponse)
+        except Exception as exc:
+            last_exc = exc
+            logger.warning("Fallo modelo Gemini %s en escáner: %s", model_name, exc)
+
+    if last_exc is not None:
+        raise last_exc
+    raise RuntimeError("No hay modelos Gemini disponibles para escáner.")
 
 
 def _find_missing_requirements(
@@ -509,8 +600,8 @@ async def generate_chat_response(req: ChatRequest) -> ChatResponse:
                 timeout=CHAT_TIMEOUT_SECONDS,
             )
         return _normalize_chat_response(raw_result, tramite=req.tramite)
-    except Exception as exc:
-        logger.warning("Fallback en asistente de chat por error o timeout: %s", exc)
+    except Exception:
+        logger.exception("Fallback en asistente de chat por error o timeout")
         return _build_chat_fallback(req)
 
 
@@ -540,6 +631,6 @@ async def analyze_document_image(
                 timeout=SCANNER_TIMEOUT_SECONDS,
             )
         return _normalize_scanner_response(raw_result)
-    except Exception as exc:
-        logger.warning("Fallback en escáner multimodal por error o timeout: %s", exc)
+    except Exception:
+        logger.exception("Fallback en escáner multimodal por error o timeout")
         return _build_scanner_fallback(perfil=perfil, idioma=idioma)

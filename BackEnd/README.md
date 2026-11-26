@@ -50,7 +50,7 @@ Edita `BackEnd/.env` con tu clave real:
 
 ```env
 GEMINI_API_KEY=tu_api_key_de_google_ai_studio
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
 ## Arranque en desarrollo local
@@ -152,4 +152,4 @@ Al crear el Web Service en Render:
 1. Configura **Root Directory** en `BackEnd`.
 2. **Build Command**: `pip install -r requirements.txt`
 3. **Start Command**: déjalo tomar el comando de `Procfile` o usa `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
-4. Agrega en **Environment Variables**: `GEMINI_API_KEY` y `GEMINI_MODEL=gemini-2.5-flash`.
+4. Agrega en **Environment Variables**: `GEMINI_API_KEY` y `GEMINI_MODEL=gemini-3.5-flash-lite`.
