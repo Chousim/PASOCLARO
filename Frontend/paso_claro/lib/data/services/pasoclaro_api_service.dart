@@ -76,6 +76,7 @@ class PasoClaroApiService {
           final reqText = requisitos[i];
           final match = _findGlossaryMatch(reqText, glossaryMaps);
           final lower = reqText.toLowerCase();
+          final iconType = _inferIconType(lower);
 
           items.add(
             BilingualChecklistItem(
@@ -85,9 +86,13 @@ class PasoClaroApiService {
               titleMaya: (match?['yua'] as String?) ?? _shortTitle(reqText),
               titleNahuatl: (match?['nah'] as String?) ?? _shortTitle(reqText),
               descriptionSpanish: reqText,
+              descriptionMaya: _mayaDescriptionFor(iconType),
+              descriptionNahuatl: _nahuatlDescriptionFor(iconType),
               howToGetIfMissing: (match?['explicacion_sencilla'] as String?) ??
                   'Consulta en tu módulo oficial cercano cómo tramitar este documento sin costo.',
-              iconType: _inferIconType(lower),
+              howToGetMaya: _mayaHowToGetFor(iconType),
+              howToGetNahuatl: _nahuatlHowToGetFor(iconType),
+              iconType: iconType,
               isCompleted: false,
             ),
           );
@@ -277,5 +282,73 @@ class PasoClaroApiService {
       return DocumentIconType.constancia;
     }
     return DocumentIconType.acta;
+  }
+
+  String _mayaDescriptionFor(DocumentIconType type) {
+    return switch (type) {
+      DocumentIconType.ine =>
+        "INE ma'alob u k'iinil, u yáaxil yéetel u kóopia.",
+      DocumentIconType.curp =>
+        "A CURP túumben ts'íibta'an ti' ju'un (gob.mx/curp).",
+      DocumentIconType.domicilio =>
+        "U ju'unil sáasil, ja' wa u ju'unil a kaajal túumben.",
+      DocumentIconType.constancia =>
+        "U ju'unil a najil xook ku ye'esik táan a xook bejla'e'.",
+      DocumentIconType.receta =>
+        "U ju'unil ts'aak ts'íibta'an tumen le ts'ak yajo'.",
+      DocumentIconType.acta =>
+        "Ju'un k'a'abéet utia'al a beetik le meyaja'.",
+    };
+  }
+
+  String _nahuatlDescriptionFor(DocumentIconType type) {
+    return switch (type) {
+      DocumentIconType.ine =>
+        'INE tlen kuali, achto amoxtli iuan ikopia.',
+      DocumentIconType.curp =>
+        'Mocurp tlen yankuik tlatlali ipan amatl (gob.mx/curp).',
+      DocumentIconType.domicilio =>
+        'Amatl tlen tlauili, atl noso amatl tlen moaltepe.',
+      DocumentIconType.constancia =>
+        'Amatl tlen mokalmachtiloyan tlen kinextia timomachtia axkan.',
+      DocumentIconType.receta =>
+        'Amatl tlen tepajtijketl kichijki para mopaj.',
+      DocumentIconType.acta =>
+        'Amoxtli tlen moneki para tikchiuas inin tekitl.',
+    };
+  }
+
+  String _mayaHowToGetFor(DocumentIconType type) {
+    return switch (type) {
+      DocumentIconType.ine =>
+        "Wa mina'an a INE, bis a pasaporte wa u ju'unil a kaajal.",
+      DocumentIconType.curp =>
+        "K'áate' x-ma' bo'ol ti' gob.mx/curp wa ti' a kaajal.",
+      DocumentIconType.domicilio =>
+        "K'áat junp'éel ju'un x-ma' bo'ol ti' a comisaría.",
+      DocumentIconType.constancia =>
+        "K'áate' x-ma' bo'ol ti' u kúuchil a najil xook.",
+      DocumentIconType.receta =>
+        "K'áate' ti' a ts'ak yaj tu kúuchil toj óolal.",
+      DocumentIconType.acta =>
+        "K'áat áantaj x-ma' bo'ol ti' u kúuchil le meyaja'.",
+    };
+  }
+
+  String _nahuatlHowToGetFor(DocumentIconType type) {
+    return switch (type) {
+      DocumentIconType.ine =>
+        'Tla amo tikpia INE, xikuika mopasaporte noso amatl tlen moaltepe.',
+      DocumentIconType.curp =>
+        'Xiktemo amo motlaxtlaua ipan gob.mx/curp.',
+      DocumentIconType.domicilio =>
+        'Xiktlajtlani amatl amo motlaxtlaua ipan moaltepe.',
+      DocumentIconType.constancia =>
+        'Xiktlajtlani amo motlaxtlaua ipan mokalmachtiloyan.',
+      DocumentIconType.receta =>
+        'Xiktlajtlani mopaj amatl ipan mopajtikali.',
+      DocumentIconType.acta =>
+        'Xiktlajtlani tlapaleuilistli amo motlaxtlaua ipan altepekali.',
+    };
   }
 }

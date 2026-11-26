@@ -130,7 +130,11 @@ class BilingualChecklistItem {
     required this.titleMaya,
     required this.titleNahuatl,
     required this.descriptionSpanish,
+    this.descriptionMaya,
+    this.descriptionNahuatl,
     required this.howToGetIfMissing,
+    this.howToGetMaya,
+    this.howToGetNahuatl,
     required this.iconType,
     this.isCompleted = false,
   });
@@ -140,7 +144,11 @@ class BilingualChecklistItem {
   final String titleMaya;
   final String titleNahuatl;
   final String descriptionSpanish;
+  final String? descriptionMaya;
+  final String? descriptionNahuatl;
   final String howToGetIfMissing;
+  final String? howToGetMaya;
+  final String? howToGetNahuatl;
   final DocumentIconType iconType;
   final bool isCompleted;
 
@@ -152,6 +160,22 @@ class BilingualChecklistItem {
     };
   }
 
+  String descriptionForLanguage(AppLanguage language) {
+    return switch (language) {
+      AppLanguage.yucatecMaya => descriptionMaya ?? descriptionSpanish,
+      AppLanguage.nahuatl => descriptionNahuatl ?? descriptionSpanish,
+      AppLanguage.spanish => descriptionSpanish,
+    };
+  }
+
+  String howToGetForLanguage(AppLanguage language) {
+    return switch (language) {
+      AppLanguage.yucatecMaya => howToGetMaya ?? howToGetIfMissing,
+      AppLanguage.nahuatl => howToGetNahuatl ?? howToGetIfMissing,
+      AppLanguage.spanish => howToGetIfMissing,
+    };
+  }
+
   BilingualChecklistItem copyWith({bool? isCompleted}) {
     return BilingualChecklistItem(
       id: id,
@@ -159,7 +183,11 @@ class BilingualChecklistItem {
       titleMaya: titleMaya,
       titleNahuatl: titleNahuatl,
       descriptionSpanish: descriptionSpanish,
+      descriptionMaya: descriptionMaya,
+      descriptionNahuatl: descriptionNahuatl,
       howToGetIfMissing: howToGetIfMissing,
+      howToGetMaya: howToGetMaya,
+      howToGetNahuatl: howToGetNahuatl,
       iconType: iconType,
       isCompleted: isCompleted ?? this.isCompleted,
     );
