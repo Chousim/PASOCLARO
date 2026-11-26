@@ -1,0 +1,104 @@
+[
+  {
+    "id": "salud_cita_clinica",
+    "tramite": "salud",
+    "titulo": "Cita en Clínica Pública (Centro de Salud)",
+    "etiqueta_oficial": "Oficial · Salud",
+    "requisitos": [
+      "Identificación oficial vigente (INE, original y copia)",
+      "CURP impresa reciente (gob.mx/curp)",
+      "Comprobante de domicilio menor a 3 meses (alternativa si falta: constancia gratuita de vecindad en comisaría o municipio)"
+    ],
+    "pasos": [
+      "Reúne tu identificación oficial vigente, tu CURP impresa reciente y tu comprobante de domicilio antes de acudir a la clínica.",
+      "Ubica el Centro de Salud más cercano a tu domicilio y preséntate temprano dentro del horario de atención.",
+      "Acude a la ventanilla de archivo clínico o recepción para solicitar tu cita médica o apertura de expediente.",
+      "Entrega tus documentos para registro y confirma la fecha, hora, consultorio y folio de tu cita.",
+      "Conserva tu comprobante o carnet de citas para presentarlo el día de tu consulta."
+    ],
+    "canal_oficial": {
+      "institucion": "Centro de Salud Urbano",
+      "horario": "Lun–Vie 08:00 a 15:00 h",
+      "telefono": "800 004 4800",
+      "url": "https://www.gob.mx/salud",
+      "nota": "Atención gratuita sin intermediarios"
+    }
+  },
+  {
+    "id": "beca_apoyo_social",
+    "tramite": "tramites",
+    "titulo": "Solicitud de Beca o Apoyo",
+    "etiqueta_oficial": "Oficial · Trámites",
+    "requisitos": [
+      "Constancia de estudios (gratuita en escuela o dirección)",
+      "CURP certificada (gob.mx/curp)",
+      "Comprobante de domicilio reciente o constancia municipal"
+    ],
+    "pasos": [
+      "Confirma que la convocatoria del apoyo o beca esté abierta en los canales oficiales del programa.",
+      "Solicita gratuitamente tu constancia de estudios en la escuela y descarga tu CURP certificada en gob.mx/curp.",
+      "Prepara tu comprobante de domicilio reciente o una constancia municipal de residencia sin costo.",
+      "Realiza tu registro únicamente en el portal oficial o en el módulo autorizado de atención ciudadana.",
+      "Guarda tu folio o acuse de registro para consultar el avance de tu trámite sin intermediarios."
+    ],
+    "canal_oficial": {
+      "institucion": "Coordinación Nacional de Becas",
+      "horario": "Lun–Vie 09:00 a 18:00 h",
+      "telefono": "55 1162 0300",
+      "url": "https://www.gob.mx/becasbenitojuarez",
+      "nota": "Trámite 100% gratuito sin intermediarios"
+    }
+  },
+  {
+    "id": "educacion_beca_escolar",
+    "tramite": "educacion",
+    "titulo": "Orientación sobre Becas y Trámites Escolares",
+    "etiqueta_oficial": "Oficial · Becas",
+    "requisitos": [
+      "CURP certificada del estudiante (gob.mx/curp)",
+      "Constancia de estudios vigente emitida gratuitamente en la escuela o dirección del plantel",
+      "Identificación oficial vigente del estudiante (si es mayor de edad) o de la madre, padre o tutor",
+      "Comprobante de domicilio reciente menor a 3 meses o constancia municipal"
+    ],
+    "pasos": [
+      "Verifica en la dirección o control escolar de tu plantel público que tu inscripción esté activa y tus datos coincidan con tu acta de nacimiento.",
+      "Descarga e imprime tu CURP certificada en gob.mx/curp y pide tu constancia de estudios gratuita en tu escuela.",
+      "Consulta las fechas y sedes oficiales en gob.mx/becasbenitojuarez y la información escolar de la SEP en gob.mx/sep.",
+      "Presenta tus documentos en original y copia en el módulo oficial o ventanilla escolar indicada en tu cita.",
+      "Conserva tu número de folio para dar seguimiento directo en los canales oficiales de la SEP y la Coordinación Nacional de Becas."
+    ],
+    "canal_oficial": {
+      "institucion": "SEP y Coordinación Nacional de Becas para el Bienestar Benito Juárez",
+      "horario": "Lun–Vie 09:00 a 18:00 h",
+      "telefono": "55 1162 0300",
+      "url": "https://www.gob.mx/becasbenitojuarez",
+      "nota": "Trámite 100% gratuito sin intermediarios. Información escolar adicional en https://www.gob.mx/sep"
+    }
+  },
+  {
+    "id": "empleo_servicio_nacional",
+    "tramite": "empleo",
+    "titulo": "Búsqueda de Empleo y Bolsa de Trabajo Oficial",
+    "etiqueta_oficial": "Oficial · Empleo",
+    "requisitos": [
+      "Identificación oficial vigente (INE, original y copia)",
+      "CURP impresa reciente (gob.mx/curp)",
+      "Comprobante de domicilio menor a 3 meses",
+      "Solicitud de empleo elaborada o historial laboral con datos de contacto"
+    ],
+    "pasos": [
+      "Prepara tu INE vigente, tu CURP impresa, un comprobante de domicilio y una lista clara de tu experiencia u oficios.",
+      "Consulta vacantes verificadas en empleo.gob.mx o llama al 800 841 2020 para ubicar la oficina del Servicio Nacional de Empleo más cercana.",
+      "Registra tu perfil en el portal oficial o solicita orientación gratuita en la ventanilla de vinculación laboral.",
+      "Elige vacantes acordes a tu perfil y solicita los datos oficiales o pase para entrevista con la empresa.",
+      "Verifica que todo el proceso sea gratuito y rechaza cualquier cobro por registro, examen o gestoría."
+    ],
+    "canal_oficial": {
+      "institucion": "Servicio Nacional de Empleo (SNE)",
+      "horario": "Lun–Vie 08:00 a 18:00 h",
+      "telefono": "800 841 2020",
+      "url": "https://www.empleo.gob.mx",
+      "nota": "Servicio 100% gratuito sin gestores ni cobros por vacante"
+    }
+  }
+]
