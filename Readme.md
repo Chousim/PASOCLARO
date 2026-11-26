@@ -1,5 +1,7 @@
 # PasoClaro — Documentación Básica (Hackatón UVM Ingenio Incluyente)
 
+![PasoClaro — Asistente de voz y accesibilidad para Android](assets/pasoclaro-banner.webp)
+
 **Reto:** Reto 1 · Puentes de oportunidad (Reducción de la brecha de acceso — ODS 10)  
 **Equipo:** Carlos Ysidro Junco Vázquez, José Ángel León Cortés y Fidel Ernesto Jacinto Pérez  
 **Repositorio:** https://github.com/Chousim/PASOCLARO.git  
