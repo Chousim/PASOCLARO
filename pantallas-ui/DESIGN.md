@@ -122,71 +122,72 @@ spacing:
   space-xl: 2rem
 ---
 
-## Brand & Style
+## Marca y estilo
 
-This design system establishes a light, sunlit civic clarity for a mobile-first accessible civic companion app. Designed for residents navigating municipal services, public benefits, and civic procedures, the interface prioritizes calm legibility, dignity, and effortless comprehension over decorative flair.
+Este sistema de diseño establece una claridad cívica luminosa y natural para una aplicación móvil accesible de acompañamiento ciudadano. Pensada para personas que gestionan servicios municipales, programas de apoyo público y trámites ciudadanos, la interfaz prioriza la legibilidad serena, la dignidad y la comprensión sin esfuerzo por encima de los adornos decorativos.
 
-The aesthetic blends **Minimalism** with **Corporate / Modern** precision: generous whitespace, crisp structural boundaries, and high-contrast typography create an approachable yet authoritative experience. Every interaction is grounded in WCAG AAA accessibility—large touch targets, clear visual hierarchy, and unmistakable active states—so users of all abilities can complete tasks with confidence.
+La estética combina el **minimalismo** con la precisión **corporativa y moderna**: amplios espacios en blanco, límites estructurales nítidos y tipografía de alto contraste crean una experiencia cercana pero confiable. Cada interacción está fundamentada en la accesibilidad WCAG AAA —áreas táctiles amplias, jerarquía visual clara y estados activos inconfundibles— para que cualquier persona, sin importar sus capacidades, pueda completar sus trámites con seguridad.
 
-- **Visual Tone:** Sunlit, grounded, and transparent. No emojis, no pure black (`#000000`), and no purple or neon glows.
-- **Iconography:** Clean monochrome line icons with a consistent `2px` stroke weight.
+- **Tono visual:** Luminoso, sobrio y transparente. Sin emojis, sin negro puro (`#000000`) y sin tonos morados ni resplandores neón.
+- **Iconografía:** Íconos lineales monocromáticos limpios con un grosor de trazo uniforme de `2px`.
 
-## Colors
+## Colores
 
-The palette is anchored in warm, sunlit neutrals and a deep botanical civic green, engineered to meet WCAG AAA contrast ratios without harsh pure black.
+La paleta se apoya en tonos neutros cálidos y luminosos junto con un verde botánico profundo de carácter cívico, diseñados para cumplir con las relaciones de contraste WCAG AAA sin recurrir a la dureza del negro puro.
 
-- **Canvas & Surfaces:**
-  - **Canvas Alabaster (`#FAFAFA`):** Primary application background.
-  - **Pure Paper Surface (`#FFFFFF`):** Elevated card and container surface, paired with a `1px` Whisper Border (`#E4E4E7`).
-  - **Soft Stone Surface (`#F4F4F5`):** Secondary surface for recessed containers, input wells, and subtle grouping.
-- **Primary Accent:**
-  - **Agave Jade (`#135D4F`):** Reserved for primary CTA buttons, active selection rings, and microphone icon fills.
-  - **Agave Mist (`#ECF5F3`):** Soft tinted surface for selected cards and active option states.
-- **Typography & Borders:**
-  - **Charcoal Ink (`#18181B`):** Primary text color, providing crisp readability against light surfaces without pure black.
-  - **Slate Charcoal (`#3F3F46`) & Graphite Secondary (`#52525B`):** Secondary and supporting text hierarchy.
-  - **Whisper Border (`#E4E4E7`):** Hairline `1px` structural borders for cards and dividers.
+- **Lienzo y superficies:**
+  - **Lienzo Alabastro (`#FAFAFA`):** Fondo principal de la aplicación.
+  - **Superficie Papel Puro (`#FFFFFF`):** Superficie elevada para tarjetas y contenedores, acompañada de un Borde Susurro de `1px` (`#E4E4E7`).
+  - **Superficie Piedra Suave (`#F4F4F5`):** Superficie secundaria para contenedores hundidos, campos de entrada y agrupaciones sutiles.
+- **Acento principal:**
+  - **Jade Agave (`#135D4F`):** Reservado para botones principales de llamada a la acción (CTA), anillos de selección activa y rellenos del ícono de micrófono.
+  - **Niebla de Agave (`#ECF5F3`):** Superficie con tinte suave para tarjetas seleccionadas y estados de opciones activas.
+- **Tipografía y bordes:**
+  - **Tinta Carbón (`#18181B`):** Color principal de texto, que ofrece una lectura nítida sobre superficies claras sin usar negro puro.
+  - **Carbón Pizarra (`#3F3F46`) y Grafito Secundario (`#52525B`):** Jerarquía de texto secundario y de apoyo.
+  - **Borde Susurro (`#E4E4E7`):** Líneas estructurales finas de `1px` para tarjetas y divisores.
 
-## Typography
+## Tipografía
 
-The typographic system pairs geometric clarity with relaxed, accessible reading rhythms. All headings are left-aligned with tight tracking, while body copy maintains a minimum `16px` size and generous line height for effortless scanning.
+El sistema tipográfico combina claridad geométrica con ritmos de lectura relajados y accesibles. Todos los encabezados van alineados a la izquierda con un espaciado entre letras compacto, mientras que el cuerpo de texto mantiene un tamaño mínimo de `16px` y un interlineado amplio para facilitar la lectura rápida.
 
-- **Headings (`Outfit`):** SemiBold (`600`) and Bold (`700`) weights with tight negative letter-spacing (`-0.01em` to `-0.025em`) establish clear hierarchy without visual clutter.
-- **Body Copy (`Geist`):** Regular (`400`) and Medium (`500`) weights at `16px` and `18px` with relaxed line heights (`1.5x` to `1.625x`) ensure comfortable reading on mobile screens.
-- **Status & Metadata (`JetBrains Mono`):** Used exclusively for timestamps, case numbers, step indicators, and status badges to distinguish system metadata from narrative content.
+- **Encabezados (`Outfit`):** Pesos SemiBold (`600`) y Bold (`700`) con espaciado entre letras negativo y compacto (`-0.01em` a `-0.025em`) para establecer una jerarquía clara sin ruido visual.
+- **Cuerpo de texto (`Geist`):** Pesos Regular (`400`) y Medium (`500`) en `16px` y `18px` con interlineados amplios (`1.5x` a `1.625x`) que garantizan una lectura cómoda en pantallas móviles.
+- **Estados y metadatos (`JetBrains Mono`):** Se usa exclusivamente para marcas de tiempo, números de folio o expediente, indicadores de paso e insignias de estado, diferenciando los metadatos del sistema del contenido narrativo.
 
-## Layout & Spacing
+## Retícula y espaciado
 
-This design system uses a **mobile-first fluid grid** that adapts cleanly across viewports while preserving generous breathing room and predictable touch targets.
+Este sistema de diseño utiliza una **retícula fluida *mobile-first*** que se adapta con limpieza a distintos tamaños de pantalla, conservando amplios márgenes de respiro y áreas táctiles predecibles.
 
-- **Mobile (`< 640px`):** Single-column or 4-column fluid grid with `1.25rem` (`20px`) outer canvas margins and `1rem` (`16px`) gutters. Content stacks vertically with `1rem` to `1.5rem` vertical rhythm between cards.
-- **Tablet (`640px – 1024px`):** 8-column fluid grid with `1.5rem` (`24px`) margins and `1rem` (`16px`) gutters. Related cards may pair into 2-column rows.
-- **Desktop (`> 1024px`):** Centered 12-column fluid grid capped at a comfortable reading width (`720px` for focused civic flows, `1120px` for dashboard overviews) with `2rem` (`32px`) margins.
+- **Móvil (`< 640px`):** Retícula fluida de 1 o 4 columnas con márgenes exteriores de `1.25rem` (`20px`) y medianiles (*gutters*) de `1rem` (`16px`). El contenido se apila verticalmente con un ritmo de `1rem` a `1.5rem` entre tarjetas.
+- **Tableta (`640px – 1024px`):** Retícula fluida de 8 columnas con márgenes de `1.5rem` (`24px`) y medianiles de `1rem` (`16px`). Las tarjetas relacionadas pueden agruparse en filas de 2 columnas.
+- **Escritorio (`> 1024px`):** Retícula fluida centrada de 12 columnas con un ancho máximo cómodo para lectura (`720px` para flujos de trámites enfocados y `1120px` para vistas generales de tablero) con márgenes de `2rem` (`32px`).
 
-## Elevation & Depth
+## Elevación y profundidad
 
-Depth is conveyed through **low-contrast outlines** paired with subtle **ambient shadows**, keeping the interface grounded and paper-like rather than floating.
+La profundidad se transmite mediante **contornos de bajo contraste** combinados con **sombras ambientales sutiles**, manteniendo la interfaz asentada y similar al papel en lugar de flotante.
 
-- **Primary Cards:** Pure Paper Surface (`#FFFFFF`) resting on Canvas Alabaster (`#FAFAFA`), defined by a crisp `1px` Whisper Border (`#E4E4E7`) and a soft, diffused ambient shadow (`0 4px 16px -2px rgba(24, 24, 27, 0.05)`).
-- **Recessed Surfaces:** Soft Stone Surface (`#F4F4F5`) sits flat against the canvas with no shadow to denote secondary or grouped regions.
-- **Active & Selected States:** Selected cards transition to an Agave Mist (`#ECF5F3`) fill with a `2px` Agave Jade (`#135D4F`) selection ring, replacing shadow elevation with clear chromatic focus.
+- **Tarjetas principales:** Superficie Papel Puro (`#FFFFFF`) sobre Lienzo Alabastro (`#FAFAFA`), delimitadas por un Borde Susurro nítido de `1px` (`#E4E4E7`) y una sombra ambiental suave y difusa (`0 4px 16px -2px rgba(24, 24, 27, 0.05)`).
+- **Superficies hundidas:** La Superficie Piedra Suave (`#F4F4F5`) se asienta plana sobre el lienzo sin sombra para indicar regiones secundarias o agrupadas.
+- **Estados activos y seleccionados:** Las tarjetas seleccionadas cambian a un relleno Niebla de Agave (`#ECF5F3`) con un anillo de selección Jade Agave (`#135D4F`) de `2px`, sustituyendo la elevación por sombra con un enfoque cromático claro.
 
-## Shapes
+## Formas
 
-The shape language is approachable and tactile, balancing soft, welcoming containers with structured interactive controls.
+El lenguaje de formas es cercano y táctil, equilibrando contenedores suaves y acogedores con controles interactivos bien estructurados.
 
-- **Cards & Containers:** `24px` (`1.5rem`) border radius (`rounded-xl`) for all primary cards, modal sheets, and grouped panels.
-- **Buttons & Interactive Controls:** `16px` (`1rem`) border radius (`rounded-lg`) for tactile flat buttons, input fields, and selectable list rows.
-- **Metadata & Badges:** `8px` (`0.5rem`) border radius for compact status chips and `JetBrains Mono` metadata tags.
+- **Tarjetas y contenedores:** Radio de borde de `24px` (`1.5rem`, `rounded-xl`) para todas las tarjetas principales, hojas modales y paneles agrupados.
+- **Botones y controles interactivos:** Radio de borde de `16px` (`1rem`, `rounded-lg`) para botones planos táctiles, campos de texto y filas seleccionables en listas.
+- **Metadatos e insignias:** Radio de borde de `8px` (`0.5rem`) para chips compactos de estado y etiquetas de metadatos en `JetBrains Mono`.
 
-## Components
+## Componentes
 
-All components are built for WCAG AAA accessibility, featuring high-contrast states, unmistakable focus rings, and generous touch targets.
+Todos los componentes están diseñados para cumplir con la accesibilidad WCAG AAA, incorporando estados de alto contraste, anillos de enfoque inconfundibles y áreas táctiles amplias.
 
-- **Buttons:** Tactile flat buttons with a minimum height of `52px` and `16px` border radius. Primary CTAs use Agave Jade (`#135D4F`) fill with Pure Paper (`#FFFFFF`) `Geist` Medium text. Secondary buttons use Soft Stone (`#F4F4F5`) fill with Charcoal Ink (`#18181B`) text and a `1px` Whisper Border (`#E4E4E7`).
-- **Cards:** Pure Paper Surface (`#FFFFFF`), `24px` border radius, `1px` Whisper Border (`#E4E4E7`), and `1.5rem` (`24px`) internal padding. Selected cards use Agave Mist (`#ECF5F3`) fill with a `2px` Agave Jade (`#135D4F`) border.
-- **Input Fields:** Minimum `52px` height, `16px` border radius, Soft Stone (`#F4F4F5`) or Pure Paper (`#FFFFFF`) background with a `1px` Whisper Border (`#E4E4E7`). Active focus displays a `2px` Agave Jade (`#135D4F`) ring.
-- **Chips & Status Badges:** Compact pills using `JetBrains Mono` (`12px`–`13px`) for case status, deadlines, or step counts. Active chips use Agave Mist (`#ECF5F3`) with Agave Jade (`#135D4F`) text.
-- **Lists & Selection Rows:** Full-width rows with minimum `56px` height, `16px` internal padding, and `2px` monochrome line icons.
-- **Checkboxes & Radio Buttons:** `24px × 24px` hit-area targets (wrapped in a `48px` minimum touch container) with `2px` borders; checked states fill with Agave Jade (`#135D4F`) and a crisp white indicator.
-- **Voice / Microphone Action:** A dedicated `52px+` tactile button or floating action trigger featuring a `2px` stroke microphone icon filled with Agave Jade (`#135D4F`) when active.
+- **Botones:** Botones planos táctiles con una altura mínima de `52px` y radio de borde de `16px`. Los botones principales (CTA) usan relleno Jade Agave (`#135D4F`) con texto Papel Puro (`#FFFFFF`) en `Geist` Medium. Los botones secundarios usan relleno Piedra Suave (`#F4F4F5`) con texto Tinta Carbón (`#18181B`) y un Borde Susurro de `1px` (`#E4E4E7`).
+- **Tarjetas:** Superficie Papel Puro (`#FFFFFF`), radio de borde de `24px`, Borde Susurro de `1px` (`#E4E4E7`) y margen interno (*padding*) de `1.5rem` (`24px`). Las tarjetas seleccionadas usan relleno Niebla de Agave (`#ECF5F3`) con un borde Jade Agave (`#135D4F`) de `2px`.
+- **Campos de entrada:** Altura mínima de `52px`, radio de borde de `16px`, fondo Piedra Suave (`#F4F4F5`) o Papel Puro (`#FFFFFF`) con un Borde Susurro de `1px` (`#E4E4E7`). Al enfocarse (estado activo), muestran un anillo Jade Agave (`#135D4F`) de `2px`.
+- **Chips e insignias de estado:** Cápsulas compactas en `JetBrains Mono` (`12px`–`13px`) para el estatus del trámite, fechas límite o conteo de pasos. Los chips activos usan fondo Niebla de Agave (`#ECF5F3`) con texto Jade Agave (`#135D4F`).
+- **Listas y filas de selección:** Filas de ancho completo con altura mínima de `56px`, margen interno de `16px` e íconos lineales monocromáticos de `2px`.
+- **Casillas de verificación y botones de opción (*radio buttons*):** Áreas visuales de `24px × 24px` (envueltas en un contenedor táctil mínimo de `48px`) con bordes de `2px`; los estados marcados se rellenan con Jade Agave (`#135D4F`) y un indicador blanco nítido.
+- **Acción de voz / micrófono:** Un botón táctil dedicado o disparador flotante de al menos `52px` con un ícono de micrófono de trazo de `2px` relleno en Jade Agave (`#135D4F`) cuando está activo.
+```[cite: 1]
