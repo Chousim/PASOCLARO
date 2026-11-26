@@ -1,0 +1,92 @@
+[
+  {
+    "termino_es": "Identificación oficial (INE)",
+    "yua": "U ju'unil k'ajóolal (INE)",
+    "nah": "Amoxtli tlen mitzixmati (INE)",
+    "explicacion_sencilla": "Credencial con foto vigente emitida por el gobierno que comprueba quién eres para hacer cualquier trámite."
+  },
+  {
+    "termino_es": "CURP impresa",
+    "yua": "U ts'íibil CURP",
+    "nah": "Mocurp tlen yankuik",
+    "explicacion_sencilla": "Hoja gratuita con tu clave única de 18 letras y números que se descarga en gob.mx/curp."
+  },
+  {
+    "termino_es": "Comprobante de domicilio",
+    "yua": "U ju'unil tu'ux kaja'anech",
+    "nah": "Amoxtli kampa tichanti",
+    "explicacion_sencilla": "Recibo reciente de luz, agua, teléfono o predial que muestra la dirección donde vives."
+  },
+  {
+    "termino_es": "Constancia de estudios",
+    "yua": "U ju'unil xook",
+    "nah": "Amoxtli tlen momachtia",
+    "explicacion_sencilla": "Carta gratuita sellada por la escuela que confirma que estás inscrito y estudiando actualmente."
+  },
+  {
+    "termino_es": "Cita médica",
+    "yua": "U k'iinil ts'aak",
+    "nah": "Tonalli tlen tapajtijkayotl",
+    "explicacion_sencilla": "Día y hora asignados por la clínica para que te atienda una doctora o doctor."
+  },
+  {
+    "termino_es": "Receta médica",
+    "yua": "U ju'unil ts'aak",
+    "nah": "Amoxtli tlen pajtli",
+    "explicacion_sencilla": "Documento firmado por personal médico que indica qué medicinas necesitas, en qué dosis y por cuántos días."
+  },
+  {
+    "termino_es": "Hoja de referencia",
+    "yua": "U ju'unil túuxbil ts'aak",
+    "nah": "Amoxtli tlen mitztitlani ipan okse kaltapajtijkayotl",
+    "explicacion_sencilla": "Pase médico que entrega tu clínica para que te atiendan con un especialista o en un hospital más grande."
+  },
+  {
+    "termino_es": "Folio",
+    "yua": "U xookil k'áat",
+    "nah": "Tlapoalli tlen motlajtlanilis",
+    "explicacion_sencilla": "Número único que identifica tu cita o solicitud para darle seguimiento y comprobar tu registro."
+  },
+  {
+    "termino_es": "Sello de vigencia",
+    "yua": "U selloil u k'iinil",
+    "nah": "Machiyotl tlen kipia chikaualistli",
+    "explicacion_sencilla": "Marca o firma oficial que confirma que un documento o derecho de atención sigue activo y es válido hoy."
+  },
+  {
+    "termino_es": "Constancia de vecindad",
+    "yua": "U ju'unil kajtal",
+    "nah": "Amoxtli kampa neski tichanti ipan altepetl",
+    "explicacion_sencilla": "Carta gratuita emitida por la comisaría o municipio para comprobar dónde vives cuando no tienes recibo de servicios."
+  },
+  {
+    "termino_es": "Beca o apoyo",
+    "yua": "Áantaj taak'in",
+    "nah": "Paleuilistli tomin",
+    "explicacion_sencilla": "Ayuda económica o en especie que entrega el gobierno de forma directa y gratuita para estudiar o apoyar a tu hogar."
+  },
+  {
+    "termino_es": "Centro de salud",
+    "yua": "U najil ts'aak",
+    "nah": "Kaltapajtijkayotl",
+    "explicacion_sencilla": "Clínica pública cercana a tu comunidad donde brindan consultas generales, vacunas y atención médica básica sin costo."
+  },
+  {
+    "termino_es": "Ventanilla de atención",
+    "yua": "U kúuchil k'amaj",
+    "nah": "Kampa mitztlajpalouaj uan mitzpaleuiaj",
+    "explicacion_sencilla": "Módulo o mesa oficial donde una persona servidora pública revisa tus papeles, resuelve dudas y registra tu trámite."
+  },
+  {
+    "termino_es": "Acta de nacimiento",
+    "yua": "U ju'unil síijil",
+    "nah": "Amoxtli tlen tlakatilis",
+    "explicacion_sencilla": "Documento oficial del Registro Civil que comprueba tu nombre completo, fecha y lugar de nacimiento."
+  },
+  {
+    "termino_es": "Servicio gratuito",
+    "yua": "Meyaj x-ma' bo'olil",
+    "nah": "Tequitl tlen axkana moxtlaua",
+    "explicacion_sencilla": "Trámite o atención pública por la que nadie debe cobrarte dinero ni pedir pagos a través de gestores."
+  }
+]
