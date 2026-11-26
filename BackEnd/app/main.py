@@ -56,6 +56,18 @@ def _resolve_valid_image_mime(file: UploadFile) -> str:
     )
 
 
+@app.get("/")
+async def root() -> dict[str, str]:
+    """Punto de entrada raíz con información básica del servicio."""
+    return {
+        "service": "pasoclaro-backend",
+        "status": "ok",
+        "health": "/health",
+        "docs": "/docs",
+        "guides": "/api/guides",
+    }
+
+
 @app.get("/health", response_model=HealthResponse)
 async def health_check() -> HealthResponse:
     """Verifica que el servicio esté activo."""

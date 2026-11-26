@@ -7,6 +7,18 @@ from app.main import app
 client = TestClient(app)
 
 
+def test_root_returns_service_info():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {
+        "service": "pasoclaro-backend",
+        "status": "ok",
+        "health": "/health",
+        "docs": "/docs",
+        "guides": "/api/guides",
+    }
+
+
 def test_health_endpoint():
     response = client.get("/health")
     assert response.status_code == 200
